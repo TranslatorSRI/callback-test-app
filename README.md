@@ -5,3 +5,7 @@
 cargo build --release
 ```
 
+## Run
+```shell
+cargo run --release
+```
