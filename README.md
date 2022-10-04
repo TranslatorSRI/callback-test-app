@@ -9,5 +9,3 @@ cargo build --release
 ```shell
 cargo run --release
 ```
-
-
