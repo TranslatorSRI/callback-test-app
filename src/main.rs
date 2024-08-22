@@ -11,7 +11,7 @@ use std::collections::HashMap;
 fn has_callback(query: Json<HashMap<String, Value>>) -> Value {
     match query.get("callback") {
         Some(callback_value) => {
-            let message = format!("Successfully received message from {}", callback_value.to_string());
+            let message = format!("Successfully received message: callback == {}", callback_value.to_string());
             println!("got message from {}", message);
             info!("got message from {}", message);
             json!({ "msg": message })
