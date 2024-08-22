@@ -23,7 +23,11 @@ fn callback(query: Json<HashMap<String, Value>>) -> Value {
     }
 }
 
-#[launch]
-fn rocket() -> _ {
-    rocket::build().mount("/", routes![callback])
+#[rocket::main]
+async fn main() {
+    let launch_result = rocket::build().mount("/", routes![callback]).launch().await;
+    match launch_result {
+        Ok(_) => info!("Rocket shut down gracefully."),
+        Err(err) => warn!("Rocket had an error: {}", err),
+    };
 }
