@@ -1,0 +1,9 @@
+**/.git
+**/.gitignore
+**/*~
+**/.idea
+**/target
+Cargo.lock
+.env
+docs
+helm
