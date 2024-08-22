@@ -7,8 +7,8 @@ use rocket::serde::json::serde_json::json;
 use rocket::serde::json::{Json, Value};
 use std::collections::HashMap;
 
-#[post("/receive_callback_query", format = "json", data = "<query>")]
-fn callback(query: Json<HashMap<String, Value>>) -> Value {
+#[post("/has_callback", format = "json", data = "<query>")]
+fn has_callback(query: Json<HashMap<String, Value>>) -> Value {
     match query.get("callback") {
         Some(callback_value) => {
             let message = format!("Successfully received message from {}", callback_value.to_string());
@@ -23,9 +23,22 @@ fn callback(query: Json<HashMap<String, Value>>) -> Value {
     }
 }
 
+#[post("/has_status", format = "json", data = "<query>")]
+fn has_status(query: Json<HashMap<String, Value>>) -> Value {
+    if let Some(status) = query.get("status") {
+        let message = format!("Successfully received message: status == {}", status.to_string());
+        println!("got message from {}", message);
+        info!("got message from {}", message);
+        json!({ "msg": message })
+    } else {
+        warn!("failed");
+        json!({ "msg": "Failed" })
+    }
+}
+
 #[rocket::main]
 async fn main() {
-    let launch_result = rocket::build().mount("/", routes![callback]).launch().await;
+    let launch_result = rocket::build().mount("/", routes![has_callback, has_status]).launch().await;
     match launch_result {
         Ok(_) => info!("Rocket shut down gracefully."),
         Err(err) => warn!("Rocket had an error: {}", err),
